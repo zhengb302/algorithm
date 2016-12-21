@@ -65,12 +65,18 @@ public class BinarySearchTree<Value> implements SymbolTable<Value> {
         }
     }
 
-    public void delete() {
-        
+    public void delete(String key) {
+
     }
 
     public static void main(String args[]) {
         SymbolTable<Integer> bst = new BinarySearchTree();
         bst.put("zhangsan", 18);
+
+        assert bst.get("zhangsan") == 18;
+        assert bst.get("lisi") == null;
+
+        bst.delete("zhangsan");
+        assert bst.get("zhangsan") == null;
     }
 }

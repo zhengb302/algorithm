@@ -12,5 +12,5 @@ public interface SymbolTable<Value> {
 
     public Value get(String key);
 
-    public void delete();
+    public void delete(String key);
 }
