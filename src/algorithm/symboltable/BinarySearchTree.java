@@ -65,18 +65,69 @@ public class BinarySearchTree<Value> implements SymbolTable<Value> {
         }
     }
 
+    public String min() {
+        Node minNode = min(root);
+        return minNode != null ? minNode.key : null;
+    }
+
+    private Node min(Node x) {
+        if (x == null) {
+            return null;
+        }
+
+        if (x.left != null) {
+            return min(x.left);
+        } else {
+            return x;
+        }
+    }
+
     public void delete(String key) {
-
+        root = delete(root, key);
     }
 
-    public static void main(String args[]) {
-        SymbolTable<Integer> bst = new BinarySearchTree();
-        bst.put("zhangsan", 18);
+    private Node delete(Node x, String key) {
+        if (x == null) {
+            return null;
+        }
 
-        assert bst.get("zhangsan") == 18;
-        assert bst.get("lisi") == null;
+        int cmp = key.compareTo(x.key);
+        if (cmp < 0) {
+            x.left = delete(x.left, key);
+        } else if (cmp > 0) {
+            x.right = delete(x.right, key);
+        } else {
+            if (x.left == null) {
+                return x.right;
+            }
+            if (x.right == null) {
+                return x.left;
+            }
 
-        bst.delete("zhangsan");
-        assert bst.get("zhangsan") == null;
+            Node tmp = x;
+            x = min(x.right);
+            x.right = deleteMin(tmp.right);
+            x.left = tmp.left;
+        }
+
+        return x;
     }
+
+    public void deleteMin() {
+        root = deleteMin(root);
+    }
+
+    private Node deleteMin(Node x) {
+        if (x == null) {
+            return null;
+        }
+
+        if (x.left != null) {
+            x.left = deleteMin(x.left);
+            return x;
+        } else {
+            return x.right;
+        }
+    }
+
 }
