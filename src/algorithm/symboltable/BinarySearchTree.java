@@ -4,32 +4,33 @@ package algorithm.symboltable;
  * 二叉搜索树
  *
  * @author Lumeng <zhengb302@163.com>
+ * @param <Key>
  * @param <Value>
  */
-public class BinarySearchTree<Value> implements SymbolTable<Value> {
+public class BinarySearchTree<Key extends Comparable<Key>, Value> implements SymbolTable<Key, Value> {
 
     private Node root;
 
     private class Node {
 
-        private final String key;
+        private final Key key;
 
         private Value value;
 
         private Node left, right;
 
-        public Node(String key, Value value) {
+        public Node(Key key, Value value) {
             this.key = key;
             this.value = value;
         }
 
     }
 
-    public void put(String key, Value value) {
+    public void put(Key key, Value value) {
         root = put(root, key, value);
     }
 
-    private Node put(Node x, String key, Value value) {
+    private Node put(Node x, Key key, Value value) {
         if (x == null) {
             return new Node(key, value);
         }
@@ -46,11 +47,11 @@ public class BinarySearchTree<Value> implements SymbolTable<Value> {
         return x;
     }
 
-    public Value get(String key) {
+    public Value get(Key key) {
         return get(root, key);
     }
 
-    private Value get(Node x, String key) {
+    private Value get(Node x, Key key) {
         if (x == null) {
             return null;
         }
@@ -65,7 +66,7 @@ public class BinarySearchTree<Value> implements SymbolTable<Value> {
         }
     }
 
-    public String min() {
+    public Key min() {
         Node minNode = min(root);
         return minNode != null ? minNode.key : null;
     }
@@ -82,11 +83,11 @@ public class BinarySearchTree<Value> implements SymbolTable<Value> {
         }
     }
 
-    public void delete(String key) {
+    public void delete(Key key) {
         root = delete(root, key);
     }
 
-    private Node delete(Node x, String key) {
+    private Node delete(Node x, Key key) {
         if (x == null) {
             return null;
         }

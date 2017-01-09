@@ -30,7 +30,7 @@ public class RedBlackTreeTest extends TestCase {
     public void testPut() {
         System.out.println("put");
 
-        RedBlackTree<Integer> bst = new RedBlackTree();
+        RedBlackTree<String, Integer> bst = new RedBlackTree();
         bst.put("zhangsan", 18);
         assertEquals(18, (int) bst.get("zhangsan"));
     }
@@ -42,7 +42,7 @@ public class RedBlackTreeTest extends TestCase {
     public void testGet() {
         System.out.println("get");
 
-        RedBlackTree<Integer> bst = new RedBlackTree();
+        RedBlackTree<String, Integer> bst = new RedBlackTree();
         bst.put("zhangsan", 18);
         assertEquals(18, (int) bst.get("zhangsan"));
 
@@ -56,7 +56,7 @@ public class RedBlackTreeTest extends TestCase {
     public void testDelete() {
         System.out.println("delete");
 
-        RedBlackTree<Integer> bst = new RedBlackTree();
+        RedBlackTree<String, Integer> bst = new RedBlackTree();
         bst.put("zhangsan", 18);
         assertEquals(18, (int) bst.get("zhangsan"));
 

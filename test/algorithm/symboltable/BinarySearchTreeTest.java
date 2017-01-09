@@ -39,7 +39,7 @@ public class BinarySearchTreeTest {
     public void testPut() {
         System.out.println("put");
 
-        BinarySearchTree<Integer> bst = new BinarySearchTree();
+        BinarySearchTree<String, Integer> bst = new BinarySearchTree();
         bst.put("zhangsan", 18);
         assertEquals(18, (int) bst.get("zhangsan"));
     }
@@ -51,7 +51,7 @@ public class BinarySearchTreeTest {
     public void testGet() {
         System.out.println("get");
 
-        BinarySearchTree<Integer> bst = new BinarySearchTree();
+        BinarySearchTree<String, Integer> bst = new BinarySearchTree();
         bst.put("zhangsan", 18);
         assertEquals(18, (int) bst.get("zhangsan"));
 
@@ -65,7 +65,7 @@ public class BinarySearchTreeTest {
     public void testDelete() {
         System.out.println("delete");
 
-        BinarySearchTree<Integer> bst = new BinarySearchTree();
+        BinarySearchTree<String, Integer> bst = new BinarySearchTree();
         bst.put("zhangsan", 18);
         assertEquals(18, (int) bst.get("zhangsan"));
 

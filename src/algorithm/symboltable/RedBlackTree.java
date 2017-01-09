@@ -4,9 +4,10 @@ package algorithm.symboltable;
  * 红黑树(LLRB)
  *
  * @author zhengluming <luming.zheng@shandjj.com>
+ * @param <Key>
  * @param <Value>
  */
-public class RedBlackTree<Value> implements SymbolTable<Value> {
+public class RedBlackTree<Key extends Comparable<Key>, Value> implements SymbolTable<Key, Value> {
 
     private static final boolean RED = true;
     private static final boolean BLACK = false;
@@ -15,7 +16,7 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
 
     private class Node {
 
-        private String key;
+        private Key key;
 
         private Value value;
 
@@ -23,7 +24,7 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
 
         private boolean color;
 
-        public Node(String key, Value value) {
+        public Node(Key key, Value value) {
             this.key = key;
             this.value = value;
             this.color = RED;
@@ -31,12 +32,12 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
 
     }
 
-    public void put(String key, Value value) {
+    public void put(Key key, Value value) {
         root = put(root, key, value);
         root.color = BLACK;
     }
 
-    private Node put(Node h, String key, Value value) {
+    private Node put(Node h, Key key, Value value) {
         if (h == null) {
             return new Node(key, value);
         }
@@ -63,11 +64,11 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
         return h;
     }
 
-    public Value get(String key) {
+    public Value get(Key key) {
         return get(root, key);
     }
 
-    private Value get(Node x, String key) {
+    private Value get(Node x, Key key) {
         if (x == null) {
             return null;
         }
@@ -82,11 +83,11 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
         }
     }
 
-    public boolean contains(String key) {
+    public boolean contains(Key key) {
         return get(key) != null;
     }
 
-    public String min() {
+    public Key min() {
         if (root == null) {
             return null;
         }
@@ -135,7 +136,7 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
         return fixUp(h);
     }
 
-    public void delete(String key) {
+    public void delete(Key key) {
         if (!contains(key)) {
             return;
         }
@@ -151,7 +152,7 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
         }
     }
 
-    private Node delete(Node h, String key) {
+    private Node delete(Node h, Key key) {
         if (key.compareTo(h.key) < 0) {
             if (!isRed(h.left) && !isRed(h.left.left)) {
                 h = moveRedLeft(h);
