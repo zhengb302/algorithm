@@ -82,8 +82,11 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
     }
 
     public String min() {
-        Node minNode = min(root);
-        return minNode != null ? minNode.key : null;
+        if (root == null) {
+            return null;
+        }
+
+        return min(root).key;
     }
 
     private Node min(Node x) {
@@ -98,19 +101,40 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
         }
     }
 
+    public void deleteMin() {
+        if (root == null) {
+            return;
+        }
+
+        // if both children of root are black, set root to red
+        if (!isRed(root.left) && !isRed(root.right)) {
+            root.color = RED;
+        }
+
+        root = deleteMin(root);
+        if (root != null) {
+            root.color = BLACK;
+        }
+    }
+
+    private Node deleteMin(Node h) {
+        if (h.left == null) {
+            return null;
+        }
+
+        if (!isRed(h.left) && !isRed(h.left.left)) {
+            h = moveRedLeft(h);
+        }
+
+        h.left = deleteMin(h.left);
+        return fixUp(h);
+    }
+
     public void delete(String key) {
 
     }
 
     private Node delete(Node x, String key) {
-
-    }
-
-    public void deleteMin() {
-
-    }
-
-    private Node deleteMin(Node x) {
 
     }
 
@@ -162,5 +186,53 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
         }
 
         return x.color == RED;
+    }
+
+    /**
+     * 恢复红黑树不变量
+     *
+     * @param h
+     * @return
+     */
+    private Node fixUp(Node h) {
+        if (isRed(h.right)) {
+            h = rotateLeft(h);
+        }
+        if (isRed(h.left) && isRed(h.left.left)) {
+            h = rotateRight(h);
+        }
+        if (isRed(h.left) && isRed(h.right)) {
+            flipColors(h);
+        }
+
+        return h;
+    }
+
+    // Assuming that h is red and both h.left and h.left.left
+    // are black, make h.left or one of its children red.
+    private Node moveRedLeft(Node h) {
+        // assert (h != null);
+        // assert isRed(h) && !isRed(h.left) && !isRed(h.left.left);
+
+        flipColors(h);
+        if (isRed(h.right.left)) {
+            h.right = rotateRight(h.right);
+            h = rotateLeft(h);
+            flipColors(h);
+        }
+        return h;
+    }
+
+    // Assuming that h is red and both h.right and h.right.left
+    // are black, make h.right or one of its children red.
+    private Node moveRedRight(Node h) {
+        // assert (h != null);
+        // assert isRed(h) && !isRed(h.right) && !isRed(h.right.left);
+        flipColors(h);
+        if (isRed(h.left.left)) {
+            h = rotateRight(h);
+            flipColors(h);
+        }
+        return h;
     }
 }
