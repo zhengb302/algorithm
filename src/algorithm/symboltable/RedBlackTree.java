@@ -1,6 +1,7 @@
 package algorithm.symboltable;
 
 /**
+ * 红黑树(LLRB)
  *
  * @author zhengluming <luming.zheng@shandjj.com>
  * @param <Value>
@@ -14,7 +15,7 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
 
     private class Node {
 
-        private final String key;
+        private String key;
 
         private Value value;
 
@@ -81,6 +82,10 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
         }
     }
 
+    public boolean contains(String key) {
+        return get(key) != null;
+    }
+
     public String min() {
         if (root == null) {
             return null;
@@ -131,11 +136,47 @@ public class RedBlackTree<Value> implements SymbolTable<Value> {
     }
 
     public void delete(String key) {
+        if (!contains(key)) {
+            return;
+        }
 
+        // if both children of root are black, set root to red
+        if (!isRed(root.left) && !isRed(root.right)) {
+            root.color = RED;
+        }
+
+        root = delete(root, key);
+        if (root != null) {
+            root.color = BLACK;
+        }
     }
 
-    private Node delete(Node x, String key) {
-
+    private Node delete(Node h, String key) {
+        if (key.compareTo(h.key) < 0) {
+            if (!isRed(h.left) && !isRed(h.left.left)) {
+                h = moveRedLeft(h);
+            }
+            h.left = delete(h.left, key);
+        } else {
+            if (isRed(h.left)) {
+                h = rotateRight(h);
+            }
+            if (key.compareTo(h.key) == 0 && (h.right == null)) {
+                return null;
+            }
+            if (!isRed(h.right) && !isRed(h.right.left)) {
+                h = moveRedRight(h);
+            }
+            if (key.compareTo(h.key) == 0) {
+                Node x = min(h.right);
+                h.key = x.key;
+                h.value = x.value;
+                h.right = deleteMin(h.right);
+            } else {
+                h.right = delete(h.right, key);
+            }
+        }
+        return fixUp(h);
     }
 
     /**
